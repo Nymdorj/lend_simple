@@ -1,0 +1,151 @@
+{% extends "base.html.twig" %}
+
+{% block stylesheets %}
+    <style>
+        .circle_container {
+            display: flex;
+            justify-content: center;
+        }
+        .circle {
+            position: relative;
+            display: flex;
+            margin-bottom: 80px;
+        }
+        .circle span {
+            font-family: monospace;
+            font-size: 72px;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            z-index: 2;
+            color: #00dffc;
+        }
+        .circle .semi-c {
+            box-sizing: border-box;
+            height: 200px;
+            width: 100px;
+        }
+        .circle .left {
+            border-top-left-radius: 100px;
+            border-bottom-left-radius: 100px;
+        }
+        .circle .right {
+            border-top-right-radius: 100px;
+            border-bottom-right-radius: 100px;
+        }
+        .circle .left-circle, .circle .right-circle {
+            border: 8px solid #00dffc;
+        }
+        .circle .mask-left, .circle .mask-right, .circle .block {
+            border: 8px solid #008c9e;
+            position: absolute;
+        }
+        .circle .left-circle, .circle .block, .circle .mask-right {
+            border-right: 0;
+        }
+        .circle .right-circle, .circle .mask-left {
+            border-left: 0;
+        }
+        .circle .block, .circle .mask-left, .circle .left-circle {
+            z-index: 1;
+        }
+        .circle .block, .circle .mask-left {
+            left: 100px;
+        }
+        .circle .mask-left {
+            transform-origin: left center;
+            transform: rotate(0deg);
+        }
+        .circle .mask-right {
+            transform-origin: right center;
+            transform: rotate(0deg);
+        }
+        .circle .block {
+            display: none;
+        }
+        .circle .handle {
+            display: none;
+        }
+    </style>
+{% endblock %}
+
+{% block body %}
+     <hr>
+	 <div class="wrap" style="padding: 0 15px;">
+        <h2 style="text-align: center;">Төлбөр төлөх</h2>
+        <script src="https://cdn.lend.mn/3rdparty/embedded/and-ds.js" type="text/javascript"></script>
+        <div class="col-sm-12 col-md-10 col-md-offset-1" style="height: calc(100vh - 197px); overflow-y: auto;">
+            <p>
+                Захиалга амжилттай бүртгэлээ.<br>
+                Таны захиалгын дугаар <b>#{{ orderId }}</b><br>
+                Та төлбөрөө төлнө үү <br><br><br>
+                <div class="circle_container">
+                    <div class="circle">
+                        <span class="display">{{ duration }}</span>
+                        <div class="semi-c left left-circle"></div>
+                        <div class="semi-c right mask-left handle"></div>
+                        <div class="semi-c right right-circle"></div>
+                        <div class="semi-c left mask-right"></div>
+                        <div class="semi-c right handle"></div>
+                    </div>
+                </div>
+            </p>
+            <div id="and-ds" style="margin-bottom: 40px;">
+                <script type="text/javascript">
+                    let count = {{ duration }},
+                    deg = 0;
+                    var interval;
+
+                    // Timer function to countdown seconds and update angles of masks
+                    // blocker added after 30 seconds
+                    function timer(count, invoiceNumber) {
+                        interval = setInterval(function() {
+                            count--;
+                            deg += 6;
+                            display(count);
+                            if(count >= 30) {
+                                $('.mask-right').css('transform', 'rotate(' + deg + 'deg)');
+                            } else {
+                                $('.mask-left').css('transform', 'rotate(' + deg + 'deg)');
+                            }
+                            
+                            if(count === 30) {
+                                deg = 0;
+                                $('.block').removeClass('handle');
+                                $('.mask-left').removeClass('handle');
+                            } else if(count === 0) {
+                                clearInterval(interval);
+                                location.href = '/cart/expire?order_id={{ orderId }}';
+                                
+                                $('.display').css('color', '#008c9e')
+                            }
+                        
+                        }, 1000);
+                    }
+
+                    // Function to update time display each second
+                    function display(val) {
+                        if(val < 10) { val = '0' + val; }
+                        $('.display').text(val);
+                    }
+
+                    timer(count, '{{ invoiceNumber }}');
+
+                    document.getElementById('and-ds').addEventListener('click', _ => {
+                        clearInterval(interval);
+                    });
+
+                    ANDembedded.button({
+                        "container": "and-ds",
+                        "invoiceNumber": "{{ invoiceNumber }}",
+                        "amount": "{{ amount }}",
+                        "callback": function (params) {
+                            clearInterval(interval);
+                        }
+                    });
+                </script>
+            </div>
+        </div>
+    </div>
+{% endblock %}

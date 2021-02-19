@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<meta name="description" content="Indigo - A clean, responsive ecommerce HTML template">
+		<meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1">
+		<title>
+			{% block title %}Indigo
+			{% endblock %}
+		</title>
+
+		<link rel="stylesheet" href="{{ asset('css/normalize-and-boilerplate.css') }}"/>
+		<link rel="stylesheet" href="{{ asset('css/font-awesome.css') }}"/>
+		<link rel="stylesheet" href="{{ asset('css/flexslider.css') }}"/>
+		<link rel="stylesheet" href="{{ asset('css/style.css') }}"/>
+		<link rel="stylesheet" href="{{ asset('css/cs.css') }}"/>
+
+		<script src="{{ asset('js/vendor/modernizr-2.6.2-respond-1.1.0.min.js') }}"></script>
+		{% block stylesheets %}{% endblock %}
+	</head>
+	<body>
+		<!-- start: header -->
+		<header class="header">
+			<div class="row max-inner">
+				<div class="columns col-2">
+					<a href="{{ path("home") }}" title="Indigo" class="logo">Indigo</a>
+				</div>
+			</div>
+		</header>
+		<!-- end: header -->
+		{% block body %}{% endblock %}
+		{% set current_path = app.request.get('_route') %}
+		<footer class="sticky__footer">
+			<div class="footer__container">
+				<div class="footer__cart">
+					<a href="{{ path('home') }}" class="cart {{ ( current_path == 'home' ? 'active' : '' ) }}">
+						<span id="f_home" class="fa fa-home"></span>
+						<label for="f_home">Нүүр</label>
+					</a>
+				</div>
+				<div class="footer__cart">
+					<a href="{{ path('shop.collection') }}" class="cart {{ ( current_path == 'shop.collection' ? 'active' : '' ) }}">
+						<span id="f_collection" class="fa fa-th-large"></span>
+						<label for="f_collection">Багц</label>
+					</a>
+				</div>
+				<div class="footer__cart">
+					<a href="{{ path('cart.index') }}" class="cart position__relative {{ ( current_path == 'cart.index' ? 'active' : '' ) }}">
+						<span id="f_cart" class="fa fa-shopping-cart"></span>
+						{% if (cartCount is defined) and (cartCount > 0) %}
+							<span class="cart-count"></span>
+						{% endif %}
+						<label for="f_cart">Сагс</label>
+					</a>
+				</div>
+			</div>
+		</footer>
+		{% block javascripts %}{% endblock %}
+		<script>
+			var _gaq = [[ '_setAccount', 'UA-XXXXX-X' ], ['_trackPageview']];
+			(function (d, t) {
+				var g = d.createElement(t),
+				s = d.getElementsByTagName(t)[0];
+				g.src = '//www.google-analytics.com/ga.js';
+				s.parentNode.insertBefore(g, s)
+			}(document, 'script'));
+		</script>
+		<script src="{{ asset('//ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.js') }}"></script>
+		<script>
+			window.jQuery || document.write('<script src="js/vendor/jquery-1.11.0.min.js"><\/script>')
+		</script>
+		<script src="{{ asset('js/plugins.js') }}"></script>
+		<script src="{{ asset('js/main.js') }}"></script>
+	</body>
+</html>

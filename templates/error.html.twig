@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<meta name="description" content="Indigo - A clean, responsive ecommerce HTML template">
+		<meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1">
+		<title>
+			{% block title %}Indigo
+			{% endblock %}
+		</title>
+
+		<link rel="stylesheet" href="{{ asset('css/normalize-and-boilerplate.css') }}"/>
+		<link rel="stylesheet" href="{{ asset('css/font-awesome.css') }}"/>
+		<link rel="stylesheet" href="{{ asset('css/flexslider.css') }}"/>
+		<link rel="stylesheet" href="{{ asset('css/style.css') }}"/>
+		<link rel="stylesheet" href="{{ asset('css/cs.css') }}"/>
+
+		<script src="{{ asset('js/vendor/modernizr-2.6.2-respond-1.1.0.min.js') }}"></script>
+		{% block stylesheets %}{% endblock %}
+	</head>
+	<body>
+
+		<header class="header">
+			<div class="row max-inner">
+				<div class="columns col-2">
+					<a href="#" title="Indigo" class="logo">Indigo</a>
+				</div>
+			</div>
+		</header>
+		<hr>
+		<div class="wrap" style="padding: 0 15px;">
+			<h2 style="text-align: center; color: red;">Алдаа</h2>
+			<div style="height: calc(100vh - 200px); overflow-y: auto;">
+				<p>
+					Алдаа гарлаа.<br>
+					Алдааны мессеж:
+					{{ errorMsg }}<br><br>
+				</p>
+			</div>
+		</div>
+	</body>
+</html>

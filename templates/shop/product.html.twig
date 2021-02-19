@@ -1,0 +1,113 @@
+{% extends "base.html.twig" %}
+
+{% block body %}
+	<!-- start: breadcrumbs -->
+	<section class="row breadcrumbs max-inner">
+		<div class="columns col-12">
+			<ul class="breadcrumb-list">
+				<li>
+					<a href="{{ path('home') }}">Home</a>
+				</li>
+				<li>Product page</li>
+			</ul>
+		</div>
+	</section>
+	<!-- end: breadcrumbs -->
+
+	<!-- start: main content -->
+	<section class="main-content">
+		<div class="row max-inner">
+
+			<div class="columns col-5 product-media">
+				<a href="#"><img src="{{ asset('images/product-image-' ~ product.image ~ '.jpg') }}"/></a>
+			</div>
+
+			<div class="columns col-6 product-info float-right">
+				<span class="product-meta">{{ product.brandname }}</span>
+				<h2>{{ product.name }}</h2>
+				<span class="product-price">${{ product.price }}</span>
+
+				<div class="row product-desc">
+					<p>{{ product.description }}</p>
+				</div>
+
+				<!-- start: product options form -->
+				<form action="{{ path('cart.add') }}" method="POST" id="cartForm">
+					<input hidden name="product-id" value="{{ product.id }}"/>
+					<div class="row product-options">
+
+						<div class="columns col-4 sort-options">
+							<span class="label-text">Size:</span>
+							<label for="size-select" class="select-label">
+								<select required class="styled-drop-down" id="size-select" name="size-select">
+									<option disabled value selected>Choose size of product ...</option>
+									{% set sizes = product.size|split(',') %}
+									{% for size in sizes %}
+										<option value='{{ size }}'>{{ size }}</option>
+									{% endfor %}
+								</select>
+							</label>
+						</div>
+
+						<div class="columns col-4 sort-options">
+							<span class="label-text">Color:</span>
+							<label for="color-select" class="select-label">
+								<select required class="styled-drop-down" id="color-select" name="color-select">
+									<option disabled value selected>Choose color of product ...</option>
+									{% set colors = product.color|split(',') %}
+									{% for color in colors %}
+										<option value='{{ color }}'>{{ color }}</option>
+									{% endfor %}
+								</select>
+							</label>
+						</div>
+
+						<div class="columns col-4 sort-options">
+							<span class="label-text">Type:</span>
+							<label for="material-select" class="select-label">
+								<select required class="styled-drop-down" id="material-select" name="material-select">
+									<option disabled value selected>Choose type of product ...</option>
+									{% set types = product.type|split(',') %}
+									{% for type in types %}
+										<option value='{{ type }}'>{{ type }}</option>
+									{% endfor %}
+								</select>
+							</label>
+						</div>
+
+					</div>
+
+					<div class="row product-options">
+						<div class="columns col-6">
+							<label for="product-quantity" class="product-quantity">
+								<span class="label-text">Quantity:</span>
+								<input type="number" name="product-quantity" value="1" id="product-quantity"/>
+							</label>
+						</div>
+
+						<div class="columns col-6">
+							<button type="submit" class="submit">
+								<i class="fa fa-shopping-cart"></i>
+								Add to cart
+							</button>
+						</div>
+					</div>
+
+				</form>
+			</div>
+		</div>
+	</section>
+	<script>
+		document.getElementById('cartForm').addEventListener('onsubmit', function () {
+const size = document.forms['cartForm']['size-select'].value;
+const color = document.forms['cartForm']['color-select'].value;
+const type = document.forms['cartForm']['type-select'].value;
+const quantity = document.forms['cartForm']['product-quantity'].value;
+
+if (size == '' || color == '' || type == '' || quantity < 1) {
+alert('Дутуу утгаа бөглөнө үү!');
+return false;
+}
+});
+	</script>
+{% endblock %}

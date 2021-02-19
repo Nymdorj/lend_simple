@@ -1,0 +1,121 @@
+{% extends "base.html.twig" %}
+
+{% block body %}
+	<!-- start: breadcrumbs -->
+	<section class="row breadcrumbs max-inner">
+		<div class="columns col-12">
+			<ul class="breadcrumb-list">
+				<li>
+					<a href="{{ path('home') }}">Home</a>
+				</li>
+				<li>Cart</li>
+			</ul>
+		</div>
+	</section>
+	<!-- end: breadcrumbs -->
+
+	<!-- start: main content -->
+	<section class="main-content" style="height: calc(100vh - 197px); overflow-y: auto;">
+		<div class="row max-inner">
+			<div class="columns col-12">
+				{% if (carts is defined) and (cartCount > 0) %}
+					<!-- start: cart form -->
+					<form action="{{ path('cart.invoice') }}" method="POST">
+						<table class="cart-table" cellspacing="0">
+							<thead>
+								<tr>
+									<th class="product-thumbnail">&nbsp;</th>
+									<th class="product-description" colspan="1">Items</th>
+									<th class="product-price">Price</th>
+									<th class="product-quantity">Quantity</th>
+									<th class="product-total">Total</th>
+									<th class="product-remove">&nbsp;</th>
+								</tr>
+							</thead>
+							<tbody>
+								{% for cart in carts %}
+									<tr class="cart-item">
+										<td class="product-thumbnail">
+											<a href="{{ path("shop.product", {id: cart.productid}) }}"><img src="{{ asset('images/cart-image-' ~ cart.image ~ '.jpg') }}"></a>
+										</td>
+										<td class="product-description">
+											<h3>
+												<a href="{{ path("shop.product", {id: cart.productid}) }}">{{ cart.name }}</a>
+											</h3>
+											<p>{{ cart.description }}</p>
+											<p>
+												<strong>Size:</strong>
+												{{ cart.size }}<br/>
+												<strong>Color:</strong>
+												{{ cart.color }}<br/>
+												<strong>Type:</strong>
+												{{ cart.material }}
+											</p>
+										</td>
+										<td class="product-price">
+											${{ cart.price|number_format(2, '.', '') }}
+										</td>
+										<td class="product-quantity">
+											<label for="quantity-select" class="select-label">
+												<select class="styled-drop-down" id="quantity-select" name="quantity-select">
+													{% for q in 1 .. 10 %}
+														<option {{ q == cart.quantity ? 'selected' : '' }}>{{ q }}</option>
+													{% endfor %}
+												</select>
+											</label>
+										</td>
+										<td class="product-total">
+											${{ cart.totalPrice|number_format(2, '.', '') }}
+										</td>
+										<td class="product-remove">
+											<input hidden name="cart-ids[]" value="{{ cart.id }}"/>
+											<a href="#" data-id="{{ cart.id }}" onclick="removeItem()">X</a>
+										</td>
+									</tr>
+								{% endfor %}
+
+							</tbody>
+						</table>
+
+
+						<!-- start: cart summary -->
+						<table class="cart-details">
+							<tbody>
+								<tr class="spacer-row">
+									<td colspan="5"></td>
+								</tr>
+								<tr>
+									<td class="cart-summary" colspan="3">
+										Summary
+									</td>
+									<td class="cart-subtotals">
+										<span>Subtotal:</span>
+										{% set totalPrice = carts|reduce((price, cart) => price + cart.totalPrice) %}
+										${{ totalPrice|number_format(2, '.', '') }}
+									</td>
+									<td class="cart-shipping">
+										<span>Shipment:</span>
+										$25.00
+									</td>
+									<td class="cart-total">
+										<span>Total to pay:</span>
+										${{ (totalPrice + 25)|number_format(2, '.', '') }}
+										<input hidden name="total-pay" value="{{ totalPrice + 25 }}"/>
+									</td>
+									<td class="cart-submit">
+										<input type="submit" class="cart-submit" name="cart-submit" value="Create invoice"/>
+									</td>
+								</tr>
+							</tbody>
+						</table>
+						<!-- end: cart summary -->
+					</form>
+					<!-- end: cart form -->
+				{% else %}
+					<p>Nothing to show...</p>
+				{% endif %}
+			</div>
+		</div>
+	</section>
+	<!-- end: main content -->
+{% endblock %}

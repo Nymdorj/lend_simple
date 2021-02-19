@@ -1,0 +1,55 @@
+.sticky__footer {
+  position: sticky;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  background: #fff;
+  z-index: 10;
+}
+
+.footer__container {
+  display: flex;
+  height: 75px;
+  justify-content: space-evenly;
+  padding: 10px 0;
+  box-sizing: border-box;
+}
+
+.footer__cart {
+  width: 35px;
+  font-size: 35px;
+}
+
+.position__relative {
+  position: relative;
+}
+
+.cart-count {
+  position: absolute;
+  border-radius: 100%;
+  padding: 4px;
+  font-weight: bold;
+  box-shadow: 0 0 3.5px 2px #3386e3;
+  left: 30px;
+  background-color: #3386e3;
+}
+
+.cart {
+  display: flex;
+  flex-flow: column;
+  align-items: center;
+  line-height: 10px;
+}
+
+.cart label {
+  font-size: 10px;
+}
+
+span.fa {
+  color: #a8bdd4;
+}
+
+.active,
+.active .fa {
+  color: red;
+}

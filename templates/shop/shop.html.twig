@@ -1,0 +1,138 @@
+{% extends "base.html.twig" %}
+
+{% block body %}
+
+	<!-- start: breadcrumbs -->
+	<section class="row breadcrumbs max-inner">
+		<div class="columns col-12">
+			<ul class="breadcrumb-list">
+				<li>
+					<a href="{{ path('home') }}">Home</a>
+				</li>
+				<li>Product results</li>
+			</ul>
+		</div>
+	</section>
+	<!-- end: breadcrumbs -->
+
+
+	<!-- start: sort + product nav -->
+	<section class="filter-sort">
+		<div class="row max-inner">
+
+			<div class="columns col-2 sort-options">
+				<span>Size:</span>
+				<form>
+					<label for="size-select" class="select-label">
+						<select class="styled-drop-down" id="size-select" name="size-select">
+							<option selected="selected">XS</option>
+							<option>S</option>
+							<option>M</option>
+							<option>L</option>
+							<option>XL</option>
+						</select>
+					</label>
+				</form>
+			</div>
+
+			<div class="columns col-2 sort-options">
+				<span>Material:</span>
+				<form>
+					<label for="material-select" class="select-label">
+						<select class="styled-drop-down" id="material-select" name="material-select">
+							<option selected="selected">Lorem Ipsum</option>
+							<option>Lorem Ipsum</option>
+							<option>Lorem Ipsum</option>
+							<option>Lorem Ipsum</option>
+							<option>Lorem Ipsum</option>
+						</select>
+					</label>
+				</form>
+			</div>
+
+			<div class="columns col-2 sort-options">
+				<span>Color:</span>
+				<form>
+					<label for="color-select" class="select-label">
+						<select class="styled-drop-down" id="color-select" name="color-select">
+							<option selected="selected">All</option>
+							<option>Red</option>
+							<option>Green</option>
+							<option>Yellow</option>
+							<option>Orange</option>
+						</select>
+					</label>
+				</form>
+			</div>
+
+
+			<div class="columns col-6 products-paging">
+				<ul>
+					<li><a href="#"><i class="fa fa-caret-left"></i></a></li>
+					<li><a href="#">1</a></li>
+					<li><a href="#" class="current-prod-page">2</a></li>
+					<li><a href="#">3</a></li>
+					<li><a href="#"><i class="fa fa-caret-right"></i></a></li>
+				</ul>
+			</div>
+
+
+		</div>
+	</section>
+	<!-- end: sort + product nav -->
+
+	<!-- start: product grid -->
+	<section class="product-grid shop-grid">
+
+		<div class="row max-inner sortable-grid">
+
+			{% for product in products %}
+				<div class="columns col-3 grid-item">
+					<div class="grid-item-media">
+						<a href="{{ path('shop.product', {id: product.id}) }}"><img src="{{ asset('images/grid-item-image-' ~ product.image ~ '.jpg') }}"/></a>
+					</div>
+					<div class="grid-item-desc">
+						<h2>
+							<a class="grid-item-link" href="{{ path('shop.product', {id: product.id}) }}">
+								<span class="grid-item-meta">{{ product.brandname }}</span><hr/>
+								<span class="grid-item-title">{{ product.name }}</span>
+								<span class="grid-item-price">${{ product.price|number_format(2, '.', '') }}</span>
+							</a>
+						</h2>
+					</div>
+				</div>
+			{% endfor %}
+		</div>
+	</section>
+	<!-- end: product grid -->
+
+	<!-- start: bottom pagination -->
+	<section class="product-pagination">
+		<div class="row max-inner">
+			<div class="columns col-12">
+				<ul class="paging-list">
+					<li>
+						<a href="#">
+							<i class="fa fa-caret-left"></i>
+						</a>
+					</li>
+					<li>
+						<a href="#">1</a>
+					</li>
+					<li>
+						<a href="#" class="current-prod-page">2</a>
+					</li>
+					<li>
+						<a href="#">3</a>
+					</li>
+					<li>
+						<a href="#">
+							<i class="fa fa-caret-right"></i>
+						</a>
+					</li>
+				</ul>
+			</div>
+		</div>
+	</section>
+	<!-- end: bottom pagination -->
+{% endblock %}
